@@ -3,10 +3,26 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <span v-if="isAuthenticated"> | </span>
+      <router-link to="/dashboard" v-if="isAuthenticated"
+        >Dashboard</router-link
+      >
+      <span v-if="isAuthenticated"> | </span>
+      <router-link to="/admin" v-if="isAuthenticated">Admin</router-link>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters(["isAuthenticated"]),
+  },
+};
+</script>
 
 <style>
 #app {

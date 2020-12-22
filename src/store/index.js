@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    keycloak: null
+    keycloak: null,
+    isAdmin: false
   },
   mutations: {
     SET_KEYCLOAK(state, keycloak) {
@@ -16,6 +18,12 @@ export default new Vuex.Store({
     },
     LOGOUT(state) {
       state.keycloak.logout();
+    },
+    SET_AXIOS_TOKEN(state, token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    },
+    SET_IS_ADMIN(state, isAdmin) {
+      state.isAdmin = isAdmin;
     }
   },
   actions: {
@@ -27,6 +35,12 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("LOGOUT");
+    },
+    axiosToken({ commit }, token) {
+      commit("SET_AXIOS_TOKEN", token);
+    },
+    isAdmin({ commit }, isAdmin) {
+      commit("SET_IS_ADMIN", isAdmin);
     }
   },
   getters: {
@@ -35,6 +49,9 @@ export default new Vuex.Store({
     },
     name: state => {
       return state.keycloak.tokenParsed.name;
+    },
+    isAdmin: state => {
+      return state.isAdmin;
     }
   }
 });
